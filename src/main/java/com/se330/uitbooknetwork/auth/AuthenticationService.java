@@ -7,11 +7,13 @@ import com.se330.uitbooknetwork.user.Token;
 import com.se330.uitbooknetwork.user.TokenRepository;
 import com.se330.uitbooknetwork.user.User;
 import com.se330.uitbooknetwork.user.UserRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -19,9 +21,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
 public class AuthenticationService {
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
@@ -41,6 +42,7 @@ public class AuthenticationService {
                 .accountLocked(false)
                 .enabled(false)
                 .roles(List.of(userRole))
+                .createdDate(LocalDateTime.now())
                 .build();
         userRepository.save(user);
         sendValidationEmail(user);
