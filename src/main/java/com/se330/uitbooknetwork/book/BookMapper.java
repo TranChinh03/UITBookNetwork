@@ -1,5 +1,6 @@
 package com.se330.uitbooknetwork.book;
 
+import com.se330.uitbooknetwork.file.FileUtils;
 import com.se330.uitbooknetwork.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,9 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
                 .owner(book.getOwner().getFullName())
-                //.cover
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .build();
-    };
+    }
 
     public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory history) {
         return BorrowedBookResponse.builder()
